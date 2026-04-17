@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Alliance Gagnante — Présentation</title>
+<meta name="description" content="DR Électrique · Groupe SIP · BR Division Électrique — Un bon de commande. Trois firmes. Zéro sous-traitance cachée." />
+<style>
+  :root{
+    --bg:#0b0d10; --bg-2:#11151a; --ink:#f4f4f5; --muted:#a1a1aa;
+    --red:#e11d2e; --red-2:#ff3347; --line:rgba(255,255,255,.08);
+    --card:#141a21; --accent:#fafafa;
+    --dr:#e11d2e; --sip:#2563eb; --br:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:7vh 9vw;opacity:0;transform:translateX(40px);transition:opacity .45s ease,transform .45s ease;pointer-events:none;overflow:auto}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+  .eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+  h1{font-size:clamp(2.4rem,5.2vw,4.6rem)}
+  h2{font-size:clamp(1.9rem,3.8vw,3.2rem)}
+  h3{font-size:clamp(1.1rem,1.6vw,1.4rem)}
+  .lead{font-size:clamp(1rem,1.35vw,1.25rem);color:#d4d4d8;max-width:70ch;line-height:1.55;margin-top:1.1rem}
+  .muted{color:var(--muted)}
+  .grid{display:grid;gap:1.1rem;margin-top:2rem}
+  .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media (max-width:900px){.g-3,.g-2,.g-4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.3rem}
+  .card h3{margin-bottom:.5rem}
+  .card p{color:var(--muted);line-height:1.5;margin:.3rem 0 0}
+  .tag{display:inline-block;padding:.25rem .6rem;border:1px solid var(--line);border-radius:999px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#d4d4d8;margin-right:.4rem;margin-bottom:.4rem}
+  .kpi{font-size:clamp(2rem,3.4vw,2.8rem);font-weight:800;letter-spacing:-.02em}
+  .kpi small{display:block;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:.4rem}
+  .brand{display:flex;align-items:center;gap:.8rem;font-weight:700;letter-spacing:.04em}
+  .brand .mark{width:14px;height:24px;background:linear-gradient(180deg,var(--dr) 0 33%,var(--sip) 33% 66%,var(--br) 66% 100%);border-radius:3px}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(1200px 600px at 20% 10%,rgba(225,29,46,.18),transparent 60%),radial-gradient(900px 500px at 90% 90%,rgba(37,99,235,.12),transparent 60%);z-index:-1}
+  .dr h3::before,.sip h3::before,.br h3::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.55rem;vertical-align:middle}
+  .dr h3::before{background:var(--dr)}
+  .sip h3::before{background:var(--sip)}
+  .br h3::before{background:var(--br)}
+  .pill{display:inline-flex;align-items:center;gap:.5rem;background:rgba(225,29,46,.12);border:1px solid rgba(225,29,46,.35);color:#fecaca;padding:.35rem .8rem;border-radius:999px;font-size:.78rem;font-weight:600}
+  .footer{position:fixed;bottom:14px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:var(--muted);font-size:.78rem;z-index:5;pointer-events:none}
+  .progress{height:3px;background:var(--line);width:220px;border-radius:999px;overflow:hidden}
+  .progress > i{display:block;height:100%;background:var(--red);width:0;transition:width .4s ease}
+  .controls{position:fixed;bottom:8px;right:14px;display:flex;gap:6px;z-index:6}
+  .controls button{background:#1a2029;color:#e4e4e7;border:1px solid var(--line);padding:.45rem .7rem;border-radius:8px;font-size:.8rem;cursor:pointer}
+  .controls button:hover{background:#222831}
+  .checklist{list-style:none;padding:0;margin:1.2rem 0 0}
+  .checklist li{padding:.55rem 0;border-bottom:1px dashed var(--line);display:flex;gap:.8rem;align-items:flex-start;color:#e4e4e7;line-height:1.45}
+  .checklist li::before{content:"✓";color:var(--red);font-weight:800;margin-top:2px}
+  .problem li::before{content:"✗";color:#f87171}
+  .big-cta{display:inline-flex;align-items:center;gap:.6rem;background:var(--red);color:#fff;padding:.9rem 1.2rem;border-radius:12px;font-weight:700;text-decoration:none;margin-top:1.4rem}
+  .ghost-cta{display:inline-flex;align-items:center;gap:.6rem;background:transparent;color:#fff;border:1px solid var(--line);padding:.9rem 1.2rem;border-radius:12px;font-weight:600;text-decoration:none;margin-left:.6rem}
+  .header{position:fixed;top:14px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;z-index:5;color:var(--muted);font-size:.78rem;letter-spacing:.08em}
+  .badge{display:inline-flex;gap:.5rem;align-items:center;background:#141a21;border:1px solid var(--line);padding:.35rem .7rem;border-radius:999px;color:#d4d4d8;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-right:.4rem;margin-bottom:.4rem}
+  .split{display:grid;grid-template-columns:1.1fr .9fr;gap:2.4rem;align-items:center}
+  @media (max-width:900px){.split{grid-template-columns:1fr}}
+  .stack > * + *{margin-top:.6rem}
+  .contact{font-size:1.15rem;line-height:1.7}
+  .contact b{color:#fff}
+  @media print{
+    .header,.footer,.controls{display:none}
+    .slide{position:relative;opacity:1!important;transform:none!important;height:100vh;page-break-after:always;inset:auto}
+    html,body,.deck{height:auto;overflow:visible}
+  }
+</style>
+</head>
+<body>
+<div class="hero-bg"></div>
+<div class="header">
+  <div class="brand"><span class="mark"></span><span>ALLIANCE GAGNANTE</span></div>
+  <div>DR · SIP · BR — Québec, depuis 1970</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active" data-slide="1">
+    <span class="pill">● Carnet Q3 2026 — 3 fenêtres de mobilisation</span>
+    <div class="eyebrow"><span class="dot"></span> Présentation — Avril 2026</div>
+    <h1>Un bon de commande.<br/>Trois firmes.<br/><span style="color:#a1a1aa">Zéro sous-traitance cachée.</span></h1>
+    <p class="lead">DR Électrique, Groupe SIP et BR Division Électrique livrent votre infrastructure — haute tension, systèmes critiques et bâtiment — sous un seul contrat, un seul chef de projet, une seule signature de garantie.</p>
+    <div style="margin-top:1.4rem">
+      <span class="badge">QUÉBEC</span>
+      <span class="badge">55 ANS D'EXÉCUTION</span>
+      <span class="badge">4,8 M H SANS ACCIDENT</span>
+      <span class="badge">RBQ · CMEQ · CNESST</span>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-slide="2">
+    <div class="eyebrow"><span class="dot"></span> Le problème</div>
+    <h2>Pourquoi les donneurs d'ordres nous appellent en dernier — et le regrettent.</h2>
+    <div class="grid g-2">
+      <div>
+        <ul class="checklist problem">
+          <li>Trois contrats, trois chefs de projet, trois factures — et personne qui répond quand ça dérape.</li>
+          <li>Sous-traitance en cascade : le prix final n'est jamais celui annoncé.</li>
+          <li>Interfaces haute tension / bâtiment / procédés mal couvertes — les arrêts de production arrivent là.</li>
+          <li>Garanties fragmentées : chacun blâme l'autre firme.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Le coût réel</h3>
+        <p>Sur un projet industriel typique, la coordination fragmentée ajoute 8–14 % au budget et 6–10 semaines au calendrier. Ce sont vos marges et vos fenêtres de production.</p>
+        <div style="margin-top:1rem">
+          <span class="tag">+8–14 % coûts</span>
+          <span class="tag">+6–10 sem. délai</span>
+          <span class="tag">Risque d'arrêt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" data-slide="3">
+    <div class="eyebrow"><span class="dot"></span> La solution</div>
+    <h2>Le contractant général électrique que le Québec appelait en dernier — réuni en un seul appel.</h2>
+    <p class="lead">Un bon de commande maître. Un chef de projet unique. Les trois expertises sous la même caution et la même garantie. Vous signez une fois. Nous livrons trois firmes.</p>
+    <div class="grid g-3">
+      <div class="card"><h3>Un contrat</h3><p>Bon de commande maître, facturation consolidée, responsabilité conjointe et solidaire.</p></div>
+      <div class="card"><h3>Un interlocuteur</h3><p>Chef de projet Alliance dédié, imputable de bout en bout — de la mise en service à la garantie.</p></div>
+      <div class="card"><h3>Une garantie</h3><p>Caution et assurance 10 M$ couvrant les trois firmes sous la même signature.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide dr" data-slide="4">
+    <div class="eyebrow"><span class="dot"></span> Firme 1 — Haute tension</div>
+    <h2>DR Électrique — Haute tension & réseaux critiques</h2>
+    <div class="split">
+      <div class="stack">
+        <p class="lead">Postes, lignes et distribution jusqu'à 44 kV. Mise en service, protection, automatisme de poste et maintenance prédictive pour industriels, institutionnels et réseaux privés.</p>
+        <ul class="checklist">
+          <li>Postes MT/HT clé en main — génie civil, appareillage, protection.</li>
+          <li>Essais diélectriques, thermographie, études de coordination et d'arc flash.</li>
+          <li>Équipe de garde 24/7 pour réseaux critiques.</li>
+          <li>Plus de 55 ans d'exécution au Québec.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Signature</h3>
+        <p>« La firme que les ingénieurs consultants recommandent quand le client ne peut pas se permettre un arrêt. »</p>
+        <div style="margin-top:1rem">
+          <span class="tag">Jusqu'à 44 kV</span>
+          <span class="tag">Arc flash IEEE 1584</span>
+          <span class="tag">Garde 24/7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide sip" data-slide="5">
+    <div class="eyebrow"><span class="dot"></span> Firme 2 — Systèmes critiques</div>
+    <h2>Groupe SIP — Pharmaceutique, procédés & salles blanches</h2>
+    <div class="split">
+      <div class="stack">
+        <p class="lead">Intégration électrique et instrumentation pour environnements GMP, ISO classifiés et procédés continus. Qualification, validation et documentation conformes FDA / Santé Canada.</p>
+        <ul class="checklist">
+          <li>Salles blanches ISO 5 à 8 — alimentation, UPS, mise à la terre, EMI.</li>
+          <li>Instrumentation de procédé, SCADA, historian et intégration MES.</li>
+          <li>IQ / OQ / PQ livrés avec traçabilité complète.</li>
+          <li>Arrêts planifiés courts, exécution en zone GMP active.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Signature</h3>
+        <p>« Là où une heure d'arrêt coûte six chiffres, SIP documente chaque vis. »</p>
+        <div style="margin-top:1rem">
+          <span class="tag">GMP / FDA</span>
+          <span class="tag">ISO 5–8</span>
+          <span class="tag">IQ/OQ/PQ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide br" data-slide="6">
+    <div class="eyebrow"><span class="dot"></span> Firme 3 — Bâtiment</div>
+    <h2>BR Division Électrique — Bâtiment institutionnel & commercial</h2>
+    <div class="split">
+      <div class="stack">
+        <p class="lead">Électricité de bâtiment pour hôpitaux, écoles, centres sportifs et commerces. Éclairage DEL, contrôles intelligents, sécurité incendie et bornes de recharge VÉ.</p>
+        <ul class="checklist">
+          <li>Projets institutionnels MSSS / MEQ — livraison en milieu occupé.</li>
+          <li>Éclairage DEL, contrôles DALI, BMS et intégration ASHRAE 90.1.</li>
+          <li>Bornes de recharge VÉ Niveau 2 et rapide DC.</li>
+          <li>Mobilisation partout au Québec — équipes locales.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Signature</h3>
+        <p>« Livrer un hôpital pendant qu'il soigne. Livrer une école pendant qu'elle enseigne. »</p>
+        <div style="margin-top:1rem">
+          <span class="tag">MSSS / MEQ</span>
+          <span class="tag">DEL + contrôles</span>
+          <span class="tag">Bornes VÉ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-slide="7">
+    <div class="eyebrow"><span class="dot"></span> Chiffres clés</div>
+    <h2>55 ans. Trois firmes. Un seul standard d'exécution.</h2>
+    <div class="grid g-4">
+      <div class="card"><div class="kpi">250+<small>projets livrés</small></div></div>
+      <div class="card"><div class="kpi">4,8 M h<small>sans accident avec perte de temps</small></div></div>
+      <div class="card"><div class="kpi">10 M$<small>caution & assurance</small></div></div>
+      <div class="card"><div class="kpi">&lt; 72 h<small>devis sur dossier complet</small></div></div>
+    </div>
+    <div class="grid g-4" style="margin-top:1rem">
+      <div class="card"><div class="kpi">55<small>années d'exécution</small></div></div>
+      <div class="card"><div class="kpi">24/7<small>garde réseau critique</small></div></div>
+      <div class="card"><div class="kpi">RBQ<small>licences à jour</small></div></div>
+      <div class="card"><div class="kpi">CMEQ · CNESST<small>membres en règle</small></div></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" data-slide="8">
+    <div class="eyebrow"><span class="dot"></span> Comment on travaille</div>
+    <h2>Six garanties, un processus, zéro surprise.</h2>
+    <div class="grid g-3">
+      <div class="card"><h3>1 · Devis sous 72 h</h3><p>Sur dossier complet, prix fixe et calendrier engagés par le chef de projet Alliance.</p></div>
+      <div class="card"><h3>2 · Un seul chef de projet</h3><p>Point de contact unique, imputable des trois firmes — de la conception à la garantie.</p></div>
+      <div class="card"><h3>3 · Pas de sous-traitance cachée</h3><p>Chaque firme exécute avec ses propres équipes. Les sous-traitants éventuels sont nommés au contrat.</p></div>
+      <div class="card"><h3>4 · Caution & assurance 10 M$</h3><p>Signature conjointe et solidaire des trois firmes.</p></div>
+      <div class="card"><h3>5 · Garantie 24 mois</h3><p>Sur main-d'œuvre et intégration, au-delà des garanties manufacturier.</p></div>
+      <div class="card"><h3>6 · Rapport hebdo</h3><p>Avancement, risques, CAPEX — un seul tableau de bord, mis à jour chaque vendredi.</p></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-slide="9">
+    <div class="eyebrow"><span class="dot"></span> Passons à l'action</div>
+    <h1>Votre prochain projet — sous 72 h.</h1>
+    <p class="lead">Envoyez-nous vos plans, votre devis d'architecture ou un simple cahier des charges. Un chef de projet Alliance vous rappelle sous 48 h et vous remet un prix ferme sous 72 h.</p>
+    <div class="split" style="margin-top:2rem">
+      <div class="contact">
+        <div><b>Téléphone 24/7</b><br/>+1 514 555-0000</div>
+        <div style="margin-top:1rem"><b>Devis & soumissions</b><br/>devis@alliance-gagnante.ca</div>
+        <div style="margin-top:1rem"><b>Siège social</b><br/>Québec, Canada</div>
+      </div>
+      <div class="card">
+        <h3>Ce qu'il nous faut pour un devis</h3>
+        <ul class="checklist">
+          <li>Plans d'architecture ou électriques (même préliminaires).</li>
+          <li>Date de mise en service souhaitée.</li>
+          <li>Contraintes opérationnelles (GMP, milieu occupé, fenêtres d'arrêt).</li>
+          <li>Nom du chargé de projet chez vous.</li>
+        </ul>
+        <a class="big-cta" href="mailto:devis@alliance-gagnante.ca?subject=Demande%20de%20devis%20Alliance%20Gagnante">Obtenir un devis sous 72 h →</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">
+  <div>Alliance Gagnante — DR Électrique · Groupe SIP · BR Division Électrique</div>
+  <div style="display:flex;align-items:center;gap:12px"><span id="counter">1 / 9</span><span class="progress"><i id="bar"></i></span></div>
+</div>
+
+<div class="controls" aria-label="Navigation">
+  <button id="prev" aria-label="Précédent">◀</button>
+  <button id="next" aria-label="Suivant">Suivant ▶</button>
+  <button id="print" aria-label="Imprimer / PDF">PDF</button>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let i=0;
+  const counter=document.getElementById('counter');
+  const bar=document.getElementById('bar');
+  function render(){
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+total;
+    bar.style.width=((i+1)/total*100)+'%';
+    const url=new URL(location.href); url.hash='s'+(i+1); history.replaceState(null,'',url);
+  }
+  function go(n){ i=Math.max(0,Math.min(total-1,n)); render(); }
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home'){go(0)} else if(e.key==='End'){go(total-1)}
+    else if(e.key==='p'||e.key==='P'){window.print()}
+    else if(/^[1-9]$/.test(e.key)){go(parseInt(e.key,10)-1)}
+  });
+  document.getElementById('next').onclick=()=>go(i+1);
+  document.getElementById('prev').onclick=()=>go(i-1);
+  document.getElementById('print').onclick=()=>window.print();
+  // Touch swipe
+  let x0=null;
+  addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+  addEventListener('touchend',e=>{ if(x0===null) return; const dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40){ go(i+(dx<0?1:-1)) } x0=null; });
+  // Hash deep-link
+  const m=location.hash.match(/^#s(\d+)/); if(m){ go(parseInt(m[1],10)-1) }
+  render();
+})();
+</script>
+</body>
+</html>
